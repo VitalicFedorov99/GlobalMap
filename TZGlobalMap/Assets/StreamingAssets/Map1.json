@@ -1,0 +1,21 @@
+{
+  "missionData": [
+  {
+	"number":1,
+	"position":[0.56,0.58],
+	"nameMission":"Temp1",
+	"description":"Описание",
+	"actionText":"Сражаюсь",
+	"player":"Птицы",
+	"enemy":"Вражеские Птицы",
+	"prevMission":[4],
+	"openHeroes":["Test"],
+	"disactiveMissions":[7],
+	"scoreHeroes"
+	{
+		"score":[10],
+		"heroes":["Main"]
+	}
+  }
+  ]
+  }

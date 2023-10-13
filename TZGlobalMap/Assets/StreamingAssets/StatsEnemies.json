@@ -1,0 +1,110 @@
+{
+  "enemies": [
+    {
+      "Name": "Enemy1",
+      "Speed": 1,
+      "Health": 20,
+      "AttackSpeed": 1,
+      "Damage": 5
+    },
+    {
+      "Name": "Enemy2",
+      "Speed": 1,
+      "Health": 20,
+      "AttackSpeed": 1,
+      "Damage": 5
+    },
+    {
+      "Name": "Enemy3",
+      "Speed": 1,
+      "Health": 40,
+      "AttackSpeed": 1,
+      "Damage": 10
+    },
+    {
+      "Name": "Enemy4",
+      "Speed": 1,
+      "Health": 40,
+      "AttackSpeed": 1,
+      "Damage": 10
+    },
+    {
+      "Name": "Enemy5",
+      "Speed": 1,
+      "Health": 40,
+      "AttackSpeed": 1,
+      "Damage": 10
+    },
+    {
+      "Name": "Enemy6",
+      "Speed": 1,
+      "Health": 40,
+      "AttackSpeed": 1,
+      "Damage": 10
+    },
+    {
+      "Name": "Enemy7",
+      "Speed": 1,
+      "Health": 40,
+      "AttackSpeed": 1,
+      "Damage": 10
+    },
+    {
+      "Name": "Enemy8",
+      "Speed": 1,
+      "Health": 40,
+      "AttackSpeed": 1,
+      "Damage": 10
+    },
+    {
+      "Name": "Enemy9",
+      "Speed": 1,
+      "Health": 40,
+      "AttackSpeed": 1,
+      "Damage": 10
+    },
+    {
+      "Name": "Enemy10",
+      "Speed": 1,
+      "Health": 40,
+      "AttackSpeed": 1,
+      "Damage": 10
+    },
+    {
+      "Name": "Enemy11",
+      "Speed": 1,
+      "Health": 40,
+      "AttackSpeed": 1,
+      "Damage": 10
+    },
+    {
+      "Name": "Enemy12",
+      "Speed": 1,
+      "Health": 40,
+      "AttackSpeed": 1,
+      "Damage": 10
+    },
+    {
+      "Name": "Enemy13",
+      "Speed": 1,
+      "Health": 40,
+      "AttackSpeed": 1,
+      "Damage": 10
+    },
+    {
+      "Name": "Enemy14",
+      "Speed": 1,
+      "Health": 40,
+      "AttackSpeed": 1,
+      "Damage": 10
+    },
+    {
+      "Name": "Enemy15",
+      "Speed": 1,
+      "Health": 40,
+      "AttackSpeed": 1,
+      "Damage": 10
+    }
+   
+  ]
+}

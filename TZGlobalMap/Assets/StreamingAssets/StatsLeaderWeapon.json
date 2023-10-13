@@ -1,0 +1,11 @@
+{
+	"guns": [
+		{
+			"Name": "Enemy1",
+			"Speed": 1,
+			"Health": 20,
+			"AttackSpeed": 1,
+			"Damage": 5
+		}
+	]
+}
