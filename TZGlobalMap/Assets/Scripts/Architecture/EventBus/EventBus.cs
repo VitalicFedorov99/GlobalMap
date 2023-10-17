@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace GlobalMap.Architecture
 {
-    public class EventBus: IService
+    public class EventBus
     {
         private Dictionary<string, List<CallbackWithPriority>> _signalCallbacks = new Dictionary<string, List<CallbackWithPriority>>();
 

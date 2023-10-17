@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ using GlobalMap.Heroes;
 namespace GlobalMap.Architecture
 {
 
-    public class Factory : MonoBehaviour, IService
+    public class Factory : MonoBehaviour
     {
         [SerializeField] private MissionBuilder prefabMission;
         [SerializeField] private HeroView prefabHero;
@@ -34,7 +33,7 @@ namespace GlobalMap.Architecture
             RegisterEvents();
         }
 
-        public void CreateMissions(GameMap map, EventBus bus)
+        public void CreateMissions(GameMap map)
         {
             var missions = factoried.GetMissionDatas();
 
@@ -44,10 +43,9 @@ namespace GlobalMap.Architecture
                 var tempText = Instantiate(prefabText, parentCanvas);
                 tempMission.name += " " + mission.Number.ToString();
                 PlacementMissions(tempMission, mission);
-                tempMission.Setup(mission, tempText, bus);
+                tempMission.Setup(mission, tempText, eventBus);
                 tempMission.GetMissionData().SetupPrevMission();
                 map.AddMission(tempMission);
-
             }
 
         }
@@ -83,7 +81,7 @@ namespace GlobalMap.Architecture
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(xPosition, yPosition, 0f));
             worldPosition.z = 0;
 
-            Vector3 scale = new Vector3(missionData.Scale.x, missionData.Scale.y, 1f);
+            Vector3 scale = new Vector3(missionData.GetScale().x, missionData.GetScale().y, 1f);
 
             missionBuilder.transform.position = worldPosition;
             missionBuilder.transform.localScale = scale;

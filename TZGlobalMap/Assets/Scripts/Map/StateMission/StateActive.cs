@@ -20,7 +20,6 @@ namespace GlobalMap.Map
         }
         public void Enter()
         {
-           // bus.Invoke(new SignalActiveMission(mission));
         }
 
         public void Exit()
@@ -31,12 +30,12 @@ namespace GlobalMap.Map
         public void PointerClick()
         {
             bus.Invoke(new SignalOpenMission(mission));
-            bus.Invoke(new SignalTimeDisactiveMission(mission));
+            bus.Invoke(new SignalStateTimeDeactivateMission(mission));
         }
 
         public void PointerEnter()
         {
-            mission.GetColorizeComponent().OnHover();
+            mission.GetColorizeComponent().OnPaint(Color.green);
         }
 
         public void PointerExit()

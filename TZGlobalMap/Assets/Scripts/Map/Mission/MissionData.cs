@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,35 +8,36 @@ namespace GlobalMap.Map
     public class MissionData
     {
         public Vector2 Position;
-        public Vector2 Scale;
         public string NameMission;
         public float Number;
         [TextArea(3, 10)] public string Description;
         [TextArea(3, 10)] public string ActionText;
-        // public TypeHeroes[] TypePlayerHeroes;
-        public TypeHeroes[] TypeEnemyHeroes;
+        [Space]
         public TypeHeroes[] OpenHeroes;
+        [Space]
+        public string PlayerText;
+        public string EnemyText;
+        [Space]
         public float[] PrevMission;
-        public float[] DisactiveMissions;
-        public float[] nextMission;
+        [Space]
+        public float[] NextMission;
+        [Space]
         public ScoreHeroes[] ScoreHeroes;
         public float NumberDoubleMission = -1;
-
-
-
+        public Vector2 GetScale() => new Vector2(0.4f, 0.4f);
 
 
         private PreviousMissions prevMission;
 
-
-
-        public void RemovePrevLink(float number)
+        public void SetupOpenHeroes(List<int> numberOpenHeroes)
         {
-            prevMission.RemoveMission(number);
-            Debug.LogError("У " + Number + "Удалил предшественника " + number);
+            OpenHeroes = new TypeHeroes[numberOpenHeroes.Count];
+            for (int i = 0; i < numberOpenHeroes.Count; i++)
+            {
+                OpenHeroes[i] = (TypeHeroes)numberOpenHeroes[i];
+            }
         }
-
-
+   
         public void SetupPrevMission()
         {
             prevMission = new PreviousMissions();
@@ -46,9 +46,7 @@ namespace GlobalMap.Map
                 prevMission.AddMission(number);
             }
         }
-
-
-
+        public void RemovePrevLink(float number)=> prevMission.RemoveMission(number);
         public bool CheckNullPrevMission() => prevMission.CheckNullPrevMission();
         public bool CheckPrevMission(float number) => prevMission.CheckMission(number);
 
@@ -80,7 +78,6 @@ namespace GlobalMap.Map
             if (prevMissions.TryGetValue(number, out bool _))
             {
                 prevMissions[number] = true;
-                Debug.LogError(prevMissions[number]);
             }
         }
 
@@ -91,7 +88,7 @@ namespace GlobalMap.Map
             return false;
         }
 
-        public bool CheckNullPrevMission() 
+        public bool CheckNullPrevMission()
         {
             if (prevMissions.Count == 0)
                 return true;
@@ -100,6 +97,10 @@ namespace GlobalMap.Map
 
         public bool CheckIsOpenPrevMissions()
         {
+            if (prevMissions.Count == 0)
+            {
+                return false;
+            }
             foreach (var keyValue in prevMissions)
             {
                 if (keyValue.Value == false)
@@ -111,14 +112,8 @@ namespace GlobalMap.Map
         }
 
 
-        public void AddMission(float number)
-        {
-            prevMissions.Add(number, false);
-        }
-
-        public void RemoveMission(float number)
-        {
-            prevMissions.Remove(number);
-        }
+        public void AddMission(float number) => prevMissions.Add(number, false);
+        public void RemoveMission(float number)=> prevMissions.Remove(number);
+       
     }
 }

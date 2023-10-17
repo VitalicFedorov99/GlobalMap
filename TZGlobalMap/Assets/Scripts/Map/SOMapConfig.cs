@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 
 namespace GlobalMap.Map
 {
@@ -9,7 +7,7 @@ namespace GlobalMap.Map
     public class SOMapConfig : ScriptableObject
     {
         [SerializeField] private List<MissionData> missions;
-    //    [SerializeField] private List<>
         public List<MissionData> GetMissions() => missions;
+
     }
 }

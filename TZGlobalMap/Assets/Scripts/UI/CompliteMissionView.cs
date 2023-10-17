@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 using TMPro;
 using UnityEngine.UI;
 
@@ -17,14 +14,19 @@ namespace GlobalMap.UI
         [SerializeField] private TMP_Text nameMission;
         [SerializeField] private Image imageMission;
         [SerializeField] private RectTransform imageObject;
+        [SerializeField] private TMP_Text descriptionPlayer;
+        [SerializeField] private TMP_Text descriptionEnemy;
+        [SerializeField] private TMP_Text descriptionMission;
 
         private EventBus eventBus;
+        private CollectionImageMission collectionImages;
 
-        public void Setup(EventBus bus)
+        public void Setup(EventBus bus,CollectionImageMission collection)
         {
             eventBus = bus;
             buttonEndMission.onClick.RemoveAllListeners();
             buttonEndMission.onClick.AddListener(EndMission);
+            collectionImages = collection;
             RegisterEvent();
         }
 
@@ -40,16 +42,15 @@ namespace GlobalMap.UI
             eventBus.Invoke(new SignalCheckOpenNewHero());
         }
 
-
-        
-
         private void OpenDisplay(SignalEndMission signal)
         {
+            var mission = signal.CurrentMission.GetMissionData();
             imageObject.gameObject.SetActive(true);
+            nameMission.text = mission.NameMission;
+            descriptionEnemy.text = mission.EnemyText;
+            descriptionPlayer.text = mission.PlayerText;
+            descriptionMission.text = mission.ActionText;
+            imageMission.sprite = collectionImages.GetImageMission(mission.Number).Icon;
         }
-      
-
-
-
     }
 }

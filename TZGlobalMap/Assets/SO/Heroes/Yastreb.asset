@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1fccda50770f7749b5c7c4d097e1086, type: 3}
   m_Name: Yastreb
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 14758e433ab6dbc40a0b354c9bc0c814, type: 3}
   Name: "\u042F\u0441\u0442\u0440\u0435\u0431"
   Score: 0
-  HeroType: 1
+  HeroType: 3

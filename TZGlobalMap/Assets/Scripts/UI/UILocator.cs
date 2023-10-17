@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,22 +5,24 @@ using GlobalMap.UI;
 
 namespace GlobalMap.Architecture
 {
-
-
-    public class UILocator : MonoBehaviour, IService
+    public class UILocator : MonoBehaviour
     {
         [SerializeField] private MissionView missionView;
         [SerializeField] private CompliteMissionView compliteMissionView;
-        
-        private Dictionary<TypeHeroes,HeroView> heroesView;
-        public void Setup(EventBus bus)
+        [SerializeField] private SystemRestart systemRestart;
+        [SerializeField] private SystemExit systemExit;
+
+        private Dictionary<TypeHeroes, HeroView> heroesView;
+        public void Setup(EventBus bus, CollectionImageMission collection)
         {
-            missionView.Setup(bus);
-            compliteMissionView.Setup(bus);
-            heroesView = new Dictionary<TypeHeroes,HeroView>();
+            missionView.Setup(bus, collection);
+            compliteMissionView.Setup(bus, collection);
+            systemRestart.Setup();
+            systemExit.Setup();
+            heroesView = new Dictionary<TypeHeroes, HeroView>();
         }
 
-        public void AddHeroView(HeroView hero) 
+        public void AddHeroView(HeroView hero)
         {
             if (!heroesView.TryAdd(hero.GetTypeHero(), hero))
             {

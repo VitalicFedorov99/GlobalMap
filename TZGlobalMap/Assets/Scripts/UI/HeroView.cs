@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 using TMPro;
@@ -31,7 +29,6 @@ namespace GlobalMap.UI
             soHero = hero;
             buttonChooseHero.onClick.RemoveAllListeners();
             buttonChooseHero.onClick.AddListener(PressButtonChooseHero);
-            hero.ClearScore();
             UpdateInfo();
             RegisterEvent();
         }
@@ -55,39 +52,18 @@ namespace GlobalMap.UI
             eventBus.Subscribe<SignalPressButtonCompliteMission>(BlockImageOff);
             eventBus.Subscribe<SignalPressButtonChooseHero>(ColorizeButton);
             eventBus.Subscribe<SignalNewStep>(StartNewStep);
-            eventBus.Subscribe<SignalEndMission>(AddScoreHeroes,2);
-        }
-
-        private void AddScoreHeroes(SignalEndMission signal)
-        {
-            var scoreHeroes = signal.CurrentMission.GetMissionData().ScoreHeroes;
-            foreach (var sh in scoreHeroes)
-            {
-                if (sh.Hero == TypeHeroes.Main && signal.CurrenHero == soHero)
-                {
-                    soHero.Score += sh.Score;
-                }
-                if (sh.Hero == TypeHeroes.All)
-                {
-                    soHero.Score += sh.Score;
-                }
-                if (sh.Hero == soHero.HeroType)
-                {
-                    soHero.Score += sh.Score;
-                }
-
-            }
-            UpdateInfo();
         }
 
         private void BlockImageOn(SignalStartMission signal)
         {
-            blockImage.gameObject.SetActive(true);
+            if (blockImage != null)
+                blockImage.gameObject.SetActive(true);
         }
 
         private void BlockImageOff(SignalPressButtonCompliteMission signal)
         {
-            blockImage.gameObject.SetActive(false);
+            if (blockImage != null)
+                blockImage.gameObject.SetActive(false);
         }
 
 

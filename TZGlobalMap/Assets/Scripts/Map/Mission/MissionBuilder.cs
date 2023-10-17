@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -18,25 +16,20 @@ namespace GlobalMap.Map
 
         private EventBus eventBus;
 
-        [SerializeField] private bool missionChoose;
+        private bool missionChoose;
 
         public void Setup(MissionData missionData, TMPro.TMP_Text text, EventBus bus)
         {
             data = missionData;
             textNumber = text;
-            PlacementText();
             textNumber.text = missionData.Number.ToString();
-            colorizeComponent = new ColorizeComponent(GetComponent<SpriteRenderer>(), Color.green);
             eventBus = bus;
             RegisterEvents();
+            colorizeComponent = new ColorizeComponent(GetComponent<SpriteRenderer>());
             stateMissionController = new StateMissionController(this, bus);
             stateMissionController.Initialize();
         }
 
-
-
-
-        public void ChangeState(StateMission state) => stateMissionController.ChangeState(state);
         public MissionData GetMissionData() => data;
         public ColorizeComponent GetColorizeComponent() => colorizeComponent;
 
@@ -46,10 +39,10 @@ namespace GlobalMap.Map
         private void RegisterEvents()
         {
             eventBus.Subscribe<SignalOpenMission>(ChooseMission);
-            eventBus.Subscribe<SignalBlockMission>(BlockMission);
-            eventBus.Subscribe<SignalActiveMission>(ActiveMission);
-            eventBus.Subscribe<SignalTimeDisactiveMission>(TimeDisactiveMission);
-            eventBus.Subscribe<SignalCompliteMission>(CompliteMission);
+            eventBus.Subscribe<SignalStateBlockMission>(BlockMission);
+            eventBus.Subscribe<SignalStateActivateMission>(ActiveMission);
+            eventBus.Subscribe<SignalStateTimeDeactivateMission>(TimeDisactiveMission);
+            eventBus.Subscribe<SignalStateCompliteMission>(CompliteMission);
             eventBus.Subscribe<SignalPressButtonCloseMission>(CancelChooseMission);
             eventBus.Subscribe<SignalRemoveLinks>(RemoveLinks);
         }
@@ -58,88 +51,98 @@ namespace GlobalMap.Map
 
         private void PlacementText()
         {
+            if (textNumber == null)
+                return;
+
+          
             Vector3 worldPosition = transform.position;
-            worldPosition.x += 0f;
             Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
             textNumber.rectTransform.position = screenPosition;
         }
 
-
+        private void Update()
+        {
+            PlacementText();
+        }
+     
 
         #region Signals
 
-        private void ChooseMission(SignalOpenMission signal)
+        private void ChooseMission(SignalOpenMission signal) => missionChoose = true;
+
+        private void BlockMission(SignalStateBlockMission signal)
         {
-            missionChoose = true;
+            if (signal.CurrentMission != this)
+                return;
+
+            gameObject.SetActive(false);
+            textNumber.gameObject.SetActive(false);
+            stateMissionController.ChangeState(StateMission.Block);
+            eventBus.Invoke(new SignalRemoveLinks(this));
         }
 
-        private void BlockMission(SignalBlockMission signal)
+        private void RemoveLinks(SignalRemoveLinks signal)
         {
-            if (signal.CurrentMission == this)
+            if (!data.CheckPrevMission(signal.CurrentMission.GetMissionData().Number))
+                return;
+
+            data.RemovePrevLink(signal.CurrentMission.GetMissionData().Number);
+            if (data.CheckPrevMission())
             {
-                gameObject.SetActive(false);
-                textNumber.gameObject.SetActive(false);
-                stateMissionController.ChangeState(StateMission.Block);
-                eventBus.Invoke(new SignalRemoveLinks(this));
+                eventBus.Invoke(new SignalStateActivateMission(this));
             }
+            if (data.CheckNullPrevMission())
+            {
+                eventBus.Invoke(new SignalStateBlockMission(this));
+            }
+
+
         }
 
-        private void RemoveLinks(SignalRemoveLinks signal) 
+        private void ActiveMission(SignalStateActivateMission signal)
         {
-            if (data.CheckPrevMission(signal.CurrentMission.GetMissionData().Number)) 
-            {
-                data.RemovePrevLink(signal.CurrentMission.GetMissionData().Number);
-                if(data.CheckNullPrevMission())
-                {
-                    eventBus.Invoke(new SignalBlockMission(this));
-                }
-            }
+            if (signal.CurrentMission != this)
+                return;
+
+
+            gameObject.SetActive(true);
+            textNumber.gameObject.SetActive(true);
+            stateMissionController.ChangeState(StateMission.Active);
+
+
         }
 
-        private void ActiveMission(SignalActiveMission signal)
+        private void TimeDisactiveMission(SignalStateTimeDeactivateMission signal)
         {
-            if (signal.CurrentMission == this)
-            {
-                gameObject.SetActive(true);
-                textNumber.gameObject.SetActive(true);
-                stateMissionController.ChangeState(StateMission.Active);
-            }
+            if (signal.CurrentMission != this)
+                return;
+
+            stateMissionController.ChangeState(StateMission.TimeDisactive);
+
+
         }
 
-        private void TimeDisactiveMission(SignalTimeDisactiveMission signal)
+        private void CompliteMission(SignalStateCompliteMission signal)
         {
-           
-            if (signal.CurrentMission == this)
-            {
-                stateMissionController.ChangeState(StateMission.TimeDisactive);
-                
-            }
-            //Debug.LogError("Выбрали миссию");
-            //missionChoose = true;
-        }
-
-        private void CompliteMission(SignalCompliteMission signal)
-        {
-            if (signal.CurrentMission == this)
-            {
-                stateMissionController.ChangeState(StateMission.Complite);
-            }
             missionChoose = false;
+            if (signal.CurrentMission != this)
+                return;
+
+            stateMissionController.ChangeState(StateMission.Complite);
         }
 
         private void CancelChooseMission(SignalPressButtonCloseMission signal)
         {
-            if (signal.CurrentMission == this)
-            {
-                stateMissionController.ChangeState(StateMission.Active);
-            }
             missionChoose = false;
+            if (signal.CurrentMission != this)
+                return;
+
+            stateMissionController.ChangeState(StateMission.Active);
         }
 
         #endregion
 
-
-
+        #region Pointer
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (!missionChoose)
@@ -156,7 +159,7 @@ namespace GlobalMap.Map
         {
             if (!missionChoose)
                 stateMissionController.CurrentState.PointerClick();
-
         }
+        #endregion
     }
 }

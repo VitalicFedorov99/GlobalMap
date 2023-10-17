@@ -13,17 +13,15 @@ namespace GlobalMap.Heroes
         public TypeHeroes HeroType;
 
         public void ClearScore() => Score = 0;
-        
-        
     }
 }
 public enum TypeHeroes
 {
     NoOpen,
-    Hawk,
-    Crow,
     Main,
-    hero1,
-    hero2,
-    All
+    All,
+    Hawk,
+    Gull,
+    Crow,
+    Owl
 }

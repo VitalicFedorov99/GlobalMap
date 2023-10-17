@@ -11,7 +11,7 @@ namespace GlobalMap.Map
     {
         private MissionBuilder mission;
         private EventBus bus;
-        public StateTimeDisactive(MissionBuilder mis, EventBus b) 
+        public StateTimeDisactive(MissionBuilder mis, EventBus b)
         {
             mission = mis;
             bus = b;
@@ -33,12 +33,10 @@ namespace GlobalMap.Map
 
         public void PointerEnter()
         {
-            Debug.LogError("DisactiveEnter");
         }
 
         public void PointerExit()
         {
-            Debug.LogError("DisactiveExit");
         }
     }
 }

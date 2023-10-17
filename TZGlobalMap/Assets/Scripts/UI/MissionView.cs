@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 using TMPro;
@@ -25,11 +23,12 @@ namespace GlobalMap.UI
 
         private EventBus eventBus;
         private MissionBuilder currentMission;
+        private CollectionImageMission collectionImages;
 
-
-        public void Setup(EventBus bus)
+        public void Setup(EventBus bus, CollectionImageMission collection)
         {
             eventBus = bus;
+            collectionImages = collection;
             RegisterEvents();
             buttonStartMission.onClick.RemoveAllListeners();
             buttonStartMission.onClick.AddListener(PressButtonStartGame);
@@ -44,13 +43,7 @@ namespace GlobalMap.UI
             eventBus.Subscribe<SignalNewStep>(StartNewStep);
             eventBus.Subscribe<SignalRemoveBlockButtonStartMission>(BlockImageOff);
         }
-
-
-        private void OpenMission(SignalOpenMission signal)
-        {
-            OpenDisplay(signal.CurrentMission);
-        }
-
+        private void OpenMission(SignalOpenMission signal) => OpenDisplay(signal.CurrentMission);
         private void StartNewStep(SignalNewStep signal)
         {
             imageObject.gameObject.SetActive(false);
@@ -64,9 +57,10 @@ namespace GlobalMap.UI
             nameText.text = data.NameMission;
             descriptionText.text = data.Description;
             currentMission = mission;
+            imageMission.sprite = collectionImages.GetImageMission(data.Number).Icon;
         }
 
-        private void Close() 
+        private void Close()
         {
             eventBus.Invoke(new SignalPressButtonCloseMission(currentMission));
             imageObject.gameObject.SetActive(false);
@@ -77,8 +71,8 @@ namespace GlobalMap.UI
 
         private void PressButtonStartGame()
         {
-            eventBus.Invoke(new SignalPressButtonStart(currentMission));
             eventBus.Invoke(new SignalStartMission());
+            eventBus.Invoke(new SignalPressButtonStart(currentMission));
         }
 
 

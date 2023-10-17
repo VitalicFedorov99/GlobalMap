@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 using GlobalMap.Architecture;
 
 namespace GlobalMap.Map
@@ -19,8 +15,8 @@ namespace GlobalMap.Map
         {
             activeState = new StateActive(mission, bus);
             blockState = new StateBlock(mission, bus);
-            timeDisactiveState = new StateTimeDisactive(mission,bus);
-            compliteState = new StateComplite(mission,bus);
+            timeDisactiveState = new StateTimeDisactive(mission, bus);
+            compliteState = new StateComplite(mission, bus);
         }
 
         public void Initialize()
